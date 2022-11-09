@@ -1,5 +1,5 @@
 const express = require('express')
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config();
 const app = express()
 const cors = require('cors')
@@ -27,6 +27,13 @@ async function run() {
         const result = await cursor.toArray()
         res.send(result)
       })
+    //   get single tour
+    app.get("/tour/:id",async(req,res) =>{
+        const id = req.params.id
+        const query = {_id:ObjectId(id)}
+        const result = await tour.findOne(query)
+        res.send(result)
+    })
       app.post("review", async(req,res) => {
         const doc = {
             title: "from review",
