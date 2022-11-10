@@ -70,12 +70,14 @@ async function run() {
         const result = await review.deleteOne(query)
         res.send(result)
       })
+      // get single  review 
       app.get("/review/:id",async(req,res) =>{
         const id = req.params.id
         const query = {_id:ObjectId(id)}
         const result = await review.findOne(query)
         res.send(result)
     })
+    // update review 
     app.put('/reviewUpdate/:id', async (req, res) => {
       const _id = req.params.id;
       const data = req.body;
