@@ -65,11 +65,35 @@ async function run() {
       // delete review from user 
       app.delete("/review/:id",async(req,res)=>{
         const id = req.params.id;
+        console.log(id)
         const query = {_id:ObjectId(id)}
         const result = await review.deleteOne(query)
         res.send(result)
       })
-    } finally {
+      app.get("/review/:id",async(req,res) =>{
+        const id = req.params.id
+        const query = {_id:ObjectId(id)}
+        const result = await review.findOne(query)
+        res.send(result)
+    })
+    app.put('/reviewUpdate/:id', async (req, res) => {
+      const _id = req.params.id;
+      const data = req.body;
+      const query = { _id: ObjectId(_id) };
+      const options = { upsert: true };
+      const updateDoc = {
+          $set: {
+            userName:data.userName,
+            userReview:data.userReview
+          }
+      };
+      const result = await review.updateOne(query, updateDoc, options);
+      res.send(result)
+      console.log(data)
+  })
+
+}
+     finally {
     //   await client.close();
     }
   }
