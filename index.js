@@ -20,13 +20,20 @@ async function run() {
       const tour = client.db("tourCollection").collection("tour");
       const review = client.db("tourCollection").collection("review")
      
-      // get all document
+      // get all tour
       app.get("/tour", async(req,res) => {
         const query = {}
         const cursor = tour.find(query)
         const result = await cursor.toArray()
         res.send(result)
       })
+    //   get limit tour
+    app.get("/tours",async(req,res) => {
+        const query ={}
+        const cursor = tour.find(query)
+        const result = await cursor.limit(3).toArray()
+        res.send(result)
+    })
     //   get single tour
     app.get("/tour/:id",async(req,res) =>{
         const id = req.params.id
@@ -34,13 +41,11 @@ async function run() {
         const result = await tour.findOne(query)
         res.send(result)
     })
-      app.post("review", async(req,res) => {
-        const doc = {
-            title: "from review",
-            content: "No bytes, no problem. Just insert a document, in MongoDB",
-          }
-          const result = await review.insertOne(doc)
-          res.send(result)
+      app.post("/review", async(req,res) => {
+        const review = req.body
+        console.log(review)
+          // const result = await review.insertOne(doc)
+          // res.send(result)
       })
       
     } finally {
